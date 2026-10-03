@@ -1,0 +1,111 @@
+{
+  "paper_id": "current_paper",
+  "title": "current paper",
+  "total_findings": 1,
+  "highlight_resolved": 1,
+  "highlight_unresolved": 0,
+  "findings": [
+    {
+      "finding_id": "PG-001",
+      "problematic_text": "much to high or to low",
+      "category": "LANGUAGE",
+      "issue_type": "Spelling / Grammar",
+      "severity": "MINOR",
+      "status": "CONFIRMED",
+      "reason": "The words 'to' should be spelled as 'too' in the context of 'too high or too low'.",
+      "recommendation": "Change 'to high or to low' to 'too high or too low'.",
+      "confidence": 0.99,
+      "validation": {
+        "status": "VALID",
+        "exact_text_found": true,
+        "duplicate": false,
+        "extraction_artifact": false,
+        "category_valid": true,
+        "severity_valid": true,
+        "status_valid": true,
+        "confidence_valid": true
+      },
+      "locations": [
+        {
+          "page": 3,
+          "paragraph": 1,
+          "section": "ABSTRACT",
+          "start": 1815,
+          "end": 1837
+        }
+      ],
+      "related_locations": [],
+      "location": {
+        "page": 3,
+        "section": "ABSTRACT",
+        "paragraph": 1
+      },
+      "highlight": [
+        {
+          "rect": {
+            "x0": 329.76,
+            "y0": 417.99,
+            "x1": 452.88,
+            "y1": 429.96
+          },
+          "words": [
+            {
+              "text": "much",
+              "bbox": [
+                329.76,
+                417.99,
+                356.89,
+                429.96
+              ]
+            },
+            {
+              "text": "to",
+              "bbox": [
+                361.08,
+                417.99,
+                371.49,
+                429.96
+              ]
+            },
+            {
+              "text": "high",
+              "bbox": [
+                375.36,
+                417.99,
+                397.45,
+                429.96
+              ]
+            },
+            {
+              "text": "or",
+              "bbox": [
+                401.52,
+                417.99,
+                411.94,
+                429.96
+              ]
+            },
+            {
+              "text": "to",
+              "bbox": [
+                415.8,
+                417.99,
+                426.21,
+                429.96
+              ]
+            },
+            {
+              "text": "low?",
+              "bbox": [
+                430.2,
+                417.99,
+                452.88,
+                429.96
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

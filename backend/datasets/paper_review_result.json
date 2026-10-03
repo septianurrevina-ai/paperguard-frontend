@@ -1,0 +1,17 @@
+{
+  "paper_id": "current_paper",
+  "title": "current paper",
+  "total_findings": 1,
+  "findings": [
+    {
+      "problematic_text": "much to high or to low",
+      "category": "LANGUAGE",
+      "issue_type": "Spelling / Grammar",
+      "severity": "MINOR",
+      "status": "CONFIRMED",
+      "reason": "The words 'to' should be spelled as 'too' in the context of 'too high or too low'.",
+      "recommendation": "Change 'to high or to low' to 'too high or too low'.",
+      "confidence": 0.99
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+[
+  {
+    "category": "LANGUAGE",
+    "issue_type": "GRAMMAR",
+    "severity": "MINOR",
+    "problematic_text": "Second, what if the macroscopic flow properties of such a model are clearly wrong, for example producing an hourly flow rate that is much to high or to low?",
+    "reason": "Incorrect use of 'to' instead of 'too' in 'much to high or to low'.",
+    "recommendation": "Change 'to high or to low' to 'too high or too low'.",
+    "confidence": 0.99
+  },
+  {
+    "category": "LANGUAGE",
+    "issue_type": "GRAMMAR",
+    "severity": "MINOR",
+    "problematic_text": "this also has the advantage that it is usually computationally fast - minimal models have few rules and thus run fast on computers.",
+    "reason": "Using an unspaced hyphen instead of an en-dash or em-dash for a clause break.",
+    "recommendation": "Replace the hyphen with an em-dash or restructure the sentence.",
+    "confidence": 0.85
+  },
+  {
+    "category": "LANGUAGE",
+    "issue_type": "ACADEMIC_WORDING",
+    "severity": "MINOR",
+    "problemative_text": "One could probably reach agreement that the traffic flow behavior of traffic simulation models should be well documented.",
+    "reason": "The phrase 'reach agreement' is slightly colloquial for academic writing.",
+    "recommendation": "Consider replacing with 'It is generally agreed' or 'It is widely acknowledged'.",
+    "confidence": 0.8
+  },
+  {
+    "category": "LANGUAGE",
+    "issue_type": "GRAMMAR",
+    "severity": "MINOR",
+    "problematic_text": "in order to see it the logic for non-signalized intersections generates acceptable flow rates.",
+    "reason": "Typo 'it' instead of 'if' in 'see it the logic'.",
+    "recommendation": "Change 'see it the logic' to 'see if the logic'.",
+    "confidence": 0.95
+  },
+  {
+    "category": "LANGUAGE",
+    "issue_type": "GRAMMAR",
+    "severity": "MINOR",
+    "problematic_text": "in order to see of we obtain reasonable flow rates",
+    "reason": "Typo 'of' instead of 'if' in 'see of we obtain'.",
+    "recommendation": "Change 'see of we obtain' to 'see if we obtain'.",
+    "confidence": 0.95
+  },
+  {
+    "category": "LANGUAGE",
+    "issue_type": "GRAMMAR",
+    "severity": "MINOR",
+    "problematic_text": "This explains why the much weaker gap acceptances to not produce even more difference",
+    "reason": "Typo 'to' instead of 'do' in 'acceptances to not produce'.",
+    "recommendation": "Change 'to not produce' to 'do not produce'.",
+    "confidence": 0.95
+  }
+]

@@ -1,0 +1,46 @@
+{
+  "paper_id": "current_paper",
+  "title": "current paper",
+  "total_findings": 1,
+  "resolved_findings": 1,
+  "unresolved_findings": 0,
+  "findings": [
+    {
+      "finding_id": "PG-001",
+      "problematic_text": "much to high or to low",
+      "category": "LANGUAGE",
+      "issue_type": "Spelling / Grammar",
+      "severity": "MINOR",
+      "status": "CONFIRMED",
+      "reason": "The words 'to' should be spelled as 'too' in the context of 'too high or too low'.",
+      "recommendation": "Change 'to high or to low' to 'too high or too low'.",
+      "confidence": 0.99,
+      "validation": {
+        "status": "VALID",
+        "exact_text_found": true,
+        "duplicate": false,
+        "extraction_artifact": false,
+        "category_valid": true,
+        "severity_valid": true,
+        "status_valid": true,
+        "confidence_valid": true
+      },
+      "locations": [
+        {
+          "page": 3,
+          "paragraph": 1,
+          "section": "ABSTRACT",
+          "start": 1815,
+          "end": 1837
+        }
+      ],
+      "related_locations": [],
+      "location": {
+        "page": 3,
+        "section": "ABSTRACT",
+        "paragraph": 1
+      }
+    }
+  ],
+  "unresolved": []
+}

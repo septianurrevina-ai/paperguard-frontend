@@ -1,0 +1,916 @@
+{
+  "paper_id": "current_paper",
+  "title": "current paper",
+  "pages": [
+    {
+      "page": 1,
+      "paragraphs": [
+        {
+          "type": "paragraph",
+          "text": "TRANSIMS traﬃc ﬂow characteristics Kai Nagel†, (505) 665-0921 phone, (505) 982-0565 fax, kai@lanl.gov email Paula Stretz†, (505) 665-6598 phone, (505) 665-7464 fax, stretz@lanl.gov email Martin Pieck†, (505) 665-0086 phone, (505) 665-7464 fax, martin@tsasa.lanl.gov email Shannon Leckey†, (505) 665-3733 phone, (505) 665-7464 fax, shannon@tsasa.lanl.gov email Rick Donnelly†,∗, (505) 665-3733 phone, (505) 665-7464 fax, Rick.Donnelly@worldnet.att.net email Christopher L. Barrett† (505) 665-0430 phone, (505) 665-7464 fax, barrett@tsasa.lanl.gov email † Los Alamos National Laboratory, MS 997, Los Alamos NM 87545, USA ∗Parsons Brinckerhoﬀ, Inc., 5801 Osuna Road NE # 220, Albuquerque NM 87109, USA PREPRINT October 26, 2018",
+          "bbox": {
+            "x0": 168.36000061035156,
+            "y0": 71.20037078857422,
+            "x1": 441.7143249511719,
+            "y1": 85.56092071533203
+          }
+        },
+        {
+          "type": "heading",
+          "text": "Abstract",
+          "bbox": {
+            "x0": 278.3998718261719,
+            "y0": 426.7601318359375,
+            "x1": 332.09124755859375,
+            "y1": 441.12066650390625
+          }
+        },
+        {
+          "type": "paragraph",
+          "text": "Knowledge of fundamental traﬃc ﬂow characteristics of traﬃc simulation models is an essential requirement when using these models for the planning, design, and operation of transportation systems. In this paper we discuss the following: a description of how features relevant to traﬃc ﬂow are currently under implementation in the TRANSIMS microsimulation, a proposition for standardized traﬃc ﬂow tests for traﬃc simulation models, and the results of these tests for two diﬀerent versions of the TRANSIMS microsimulation. keywords: traﬃc simulation, traﬃc ﬂow, intersections 0",
+          "bbox": {
+            "x0": 122.15985107421875,
+            "y0": 470.01806640625,
+            "x1": 488.1817321777344,
+            "y1": 567.5669555664062
+          }
+        }
+      ]
+    },
+    {
+      "page": 2,
+      "paragraphs": [
+        {
+          "type": "paragraph",
+          "text": "PREPRINT October 26, 2018 0",
+          "bbox": {
+            "x0": 72.0,
+            "y0": 37.65707778930664,
+            "x1": 538.2860717773438,
+            "y1": 50.040733337402344
+          }
+        }
+      ]
+    },
+    {
+      "page": 3,
+      "paragraphs": [
+        {
+          "type": "paragraph",
+          "text": "PREPRINT October 26, 2018 1 I. INTRODUCTION One could probably reach agreement that the traﬃc ﬂow behavior of traﬃc simulation mod- els should be well documented. Yet, in practice, this turns out to be somewhat diﬃcult. Many traﬃc simulation models are under continuous development, and the traﬃc ﬂow dy- namics documented in a certain publication has probably been reﬁned and extended until the paper gets actually published. It makes thus sense to agree on a certain set of tests for traﬃc ﬂow dynamics which should always be run and documented together with any “real” results. In this paper, we propose such a suite of traﬃc ﬂow measurements. We are well aware of the fact that some of the results in this paper are arguably unreﬁned with respect to reality. Yet, as we stated above, we are continuously working on improvements, and this publication represents both a snapshot of where we currently stand and an argument for a standardized traﬃc ﬂow test suite for simulation models. We hope that this publication will both open the way for a constructive dialogue on which standardized traﬃc ﬂow tests should be run for traﬃc simulation models, and which of the features of our traﬃc simulation models may need improvement. When designing a traﬃc microsimulation model, the ﬁrst idea might be to measure all as- pects of human driving and put them in algorithmic form into the computer. Unfortunately, such attempts cause many problems. The ﬁrst is a data collection problem, because one can certainly not measure “all” aspects of human driving and is thus faced with the double sided problem that the necessary data collection process is extremely costly and still selec- tive. Second, what if the macroscopic ﬂow properties of such a model are clearly wrong, for example producing an hourly ﬂow rate that is much to high or to low? Since, in such a modeling approach, one does not know the connection between the many parameters of the model and the emergent properties (such as ﬂow), one is left to random trial and error. For that reason, the TRANSIMS (TRansportation ANalysis and SIMulation System [1]) microsimulation starts with a minimal approach. A minimal set of driving rules is used to simulate traﬃc, and this set of rules is only extended when it becomes clear that a certain important aspect of traﬃc ﬂow behavior cannot be included with the current rule set. Besides the conceptual clarity, this also has the advantage that it is usually computationally fast – minimal models have few rules and thus run fast on computers. This argument also makes it clear that one wants to remain ﬂexible with respect to reﬁnements of the model: If certain reﬁnements are unnecessary with respect to a certain question, one would want to switch them oﬀboth for conceptual clarity and for computational speed. The questions that TRANSIMS is currently designed for are transportation planning ques- tions. The most important zeroth order result of a transportation microsimulation should be the delays, since, once they occur, they dominate travel times, and also hinder discharge of the transportation system, thus leading to grid-lock. Delays are caused by congestion, and congestion is caused by demand being higher than capacity. This implies that the ﬁrst thing the TRANSIMS traﬃc microsimulation has to get right are capacity constraints (and possibly their variance). Capacity constraints are caused by a variety of eﬀects: • Undisturbed roadways such as freeways have capacity constraints given by the maxi-",
+          "bbox": {
+            "x0": 72.0,
+            "y0": 37.65707778930664,
+            "x1": 538.2860717773438,
+            "y1": 50.040733337402344
+          }
+        }
+      ]
+    },
+    {
+      "page": 4,
+      "paragraphs": [
+        {
+          "type": "paragraph",
+          "text": "PREPRINT October 26, 2018 2 mum of the ﬂow-density diagram. • Typical arterials have their capacity constraints given by traﬃc lights. • In the case of unprotected turning movements (yield, stop, ramps, unprotected left, etc.), the capacity constraints are given as a function of the traﬃc on the “interfering lanes”. For example, the number of vehicles making an unprotected left turn depends on the oncoming traﬃc. Building a simulation which can be adjusted against all these diagrams seems a hopeless task given the enormous amount of degrees of freedom. The TRANSIMS approach for that reason has been to generate the correct behavior from a few much more basic parameters. The correct behavior with respect to the above criteria can essentially be obtained by adjusting two parameters: (i) The value of a certain asymmetric noise parameter in the acceleration determines maximum ﬂow on freeways and through traﬃc lights; (ii) the value of the gap acceptance determines ﬂow for unprotected movements. The remainder of this paper will ﬁrst describe the algorithms TRANSIMS uses for the most important traﬃc movements, and then describe the resulting ﬂow characteristics. II. RULES A. Single lane uni-directional traﬃc Our traﬃc simulation is based on a cellular automata technique, i.e., a road is composed of cells, and each cell can either be empty, or occupied by exactly one vehicle [2,3], see Fig. 1 (a). Since movement has to be from one cell to another cell, velocities have to be integer numbers between 0 and vmax, where the unit of velocity is [cells per time-step]. It turns out that reasonable values are [3,4]: • length of a box = 1/ρjam = 7.5 m (ρjam = density of vehicles in a jam). • time step = 1 sec • maximum velocity = 5 boxes per time step = 5 · 7.5 m/sec = 135km/h ≈85mph For other conditions, such as higher or lower speed limits, this can be adapted. Note that this approach implies a coarse graining of the spatial and temporal resolution and therefore of the velocities. A vehicle which has a speed of, say, 4 in this model stands for a vehicle which has a speed anywhere between 3.5 · 7.5 meters/sec ≈95 km/h (59 mph) and 4.49999 · 7.5 meters/sec ≈121 km/h (75 mph). Vehicles move only in one direction. For an arbitrary conﬁguration (velocity and position), one update of the traﬃc system consists of two steps: a velocity update step consisting of three consecutive rules, and a movement step according to the result of the velocity update. The whole update is performed simultaneously for all vehicles. The complete conﬁguration at time step t is stored and the conﬁguration at time step t+ 1 is computed from that “old”",
+          "bbox": {
+            "x0": 72.0,
+            "y0": 37.65707778930664,
+            "x1": 538.2860717773438,
+            "y1": 50.040733337402344
+          }
+        }
+      ]
+    },
+    {
+      "page": 5,
+      "paragraphs": [
+        {
+          "type": "paragraph",
+          "text": "PREPRINT October 26, 2018 3 information. Computationally we calculate in time step t (with the three rules) the new velocity of each car and write this newly calculated velocity in the same site without moving the car (velocity update). After that we move all cars according to their newly calculated velocity (movement update). 1. (velocity update) For all particles i simultaneously, do the following: IF ( vi ≥gapi ) vi := \u001a gapi −1 with probability pnoise if possible1 gapi else (close following/braking) ELSE IF ( vi < vmax ) vi := \u001a vi with probability pnoise vi + 1 else (acceleration) ELSE (i.e. ( vi = vmax AND vi < gapi ) vi := \u001a vmax −1 with probability pnoise vmax else (free driving) ENDIF 2. (movement update) Move all particles i to xi(t + 1) = xi(t) + vi. The index i denotes the position (an integer number) of a vehicle, v(i) its current velocity, v max its maximum speed, gap(i) the number of empty cells ahead, and pnoise is a random- ization parameter. The ﬁrst velocity rule represents noisy car following or braking. If the vehicle ahead is too close, the vehicle itself attempts to adjusts its velocity such that it would, in the next time-step, reach a position just behind where the vehicle ahead is at the moment. Yet, with probability pnoise, the vehicle is a bit slower than this. The second velocity rule represents noisy acceleration. Essentially, the acceleration is linear (i.e. independent from current speed), but with probability pnoise, no acceleration happens in the current time step (maybe as a result of switching gears etc.). Instead of an acceleration sequence of 0 →1 →2 →3 →. . ., a possible acceleration sequence can now be 0 →0 → 1 →2 →2 →2 →3 →. . .. The last velocity rule represents free driving. Instead of remaining always at the same speed, such vehicles ﬂuctuate between vmax (with probability 1 −pnoise) and vmax −1 (with probability pnoise). Note that a vehicle which is set to vmax−1 will go through the acceleration step next time, thus in the next time step either staying at vmax −1 with probability pnoise or getting back to vmax. Note that the resulting average speed of a freely driving vehicle is thus vmax −pnoise. This microsimulation is also fairly well understood from a theoretical perspective; see [5,6] for more information.",
+          "bbox": {
+            "x0": 72.0,
+            "y0": 37.65707778930664,
+            "x1": 538.2860717773438,
+            "y1": 50.040733337402344
+          }
+        }
+      ]
+    },
+    {
+      "page": 6,
+      "paragraphs": [
+        {
+          "type": "paragraph",
+          "text": "PREPRINT October 26, 2018 4 B. Lane changing for passing For multi-lane traﬃc, the model consists of parallel single lane models with additional rules for lane changing. Here we describe the two lane model which can be modiﬁed to any kind of multi lane model. Lane changing is modeled by an additional update step, which is added before the velocity update. The new sequence of steps is presented below. Steps two and three are the same in the single lane model and they are executed separately for each lane.",
+          "bbox": {
+            "x0": 72.0,
+            "y0": 37.65707778930664,
+            "x1": 538.2860717773438,
+            "y1": 50.040733337402344
+          }
+        },
+        {
+          "type": "heading",
+          "text": "1. Lane changing decision",
+          "bbox": {
+            "x0": 86.27999877929688,
+            "y0": 192.51382446289062,
+            "x1": 236.6719207763672,
+            "y1": 204.48097229003906
+          }
+        },
+        {
+          "type": "heading",
+          "text": "2. Velocity update",
+          "bbox": {
+            "x0": 86.27999877929688,
+            "y0": 216.87362670898438,
+            "x1": 194.0526580810547,
+            "y1": 228.8407745361328
+          }
+        },
+        {
+          "type": "heading",
+          "text": "3. Vehicle movement",
+          "bbox": {
+            "x0": 86.27999877929688,
+            "y0": 241.23385620117188,
+            "x1": 207.90472412109375,
+            "y1": 253.2010040283203
+          }
+        },
+        {
+          "type": "paragraph",
+          "text": "According to this lane changing rule set the vehicles are only moving sideways during the lane changing step; forwards movement is done in the vehicle movement step. One should, though, look at the combined eﬀect of the lane changing and the movement, and then vehicles will usually have moved sideways and forwards. The decision to change lane is implemented as strictly parallel update, i.e. each vehicle is making its decision based upon the conﬁguration at the beginning of the update. • Lane changing decision for passing – IF neighboring position xo(i) in other lane is vacant ∗THEN Calculate: · gap(i) Gap Forward in Current Lane, · gapo(i) Gap Forward in Other Lane, · gapb(i) Gap Backward in Other Lane, · IF (gap(i) < v(i) AND gapo(i) > gap(i) ) − THEN weight1 = 1 − ELSE weight1 = 0 · weight2 = v(i) −gapf(i) · weight3 = vmax(i) −gapb(i). ∗IF ( weight1 > weight2 ) AND ( weight1 > weight3 )2 · THEN mark vehicle for lane change3 2Weights are used because of extensibility towards “lane changing for plan following”. See below. 3In the current version, the lane change is actually still rejected with a probability of 0.01 even when all the rules are fulﬁlled. This is in order to break the following artifact or variations of it: Assume one lane is completely occupied and one is completely empty. The above rule set will result in these vehicles just changing back and forth between the lanes—the vehicles will never get smeared out across the lanes. See Ref. [7] for more details.",
+          "bbox": {
+            "x0": 71.9999008178711,
+            "y0": 270.0338439941406,
+            "x1": 538.2547607421875,
+            "y1": 354.24078369140625
+          }
+        }
+      ]
+    },
+    {
+      "page": 7,
+      "paragraphs": [
+        {
+          "type": "paragraph",
+          "text": "PREPRINT October 26, 2018 5 The rules are working in the following way (see Fig. 1 (b)): First we look at the neighboring position in the target lane. If this cell is vacant, we calculate the gap forward in the current lane (gap), the gap forward in the target lane (gapo), and the gap backward in the target lane (gapb). With these results we calculate the weight1 to weight3 described above. Finally if the weight comparisons render true the car will change to the new lane. After executing the lane changing decision we calculate the new velocity for all cars and move them according to this velocity. For three or more lanes, a simultaneous implementation of the lane changing decision can lead to collisions. For example, in a three-lane road two vehicles on the left and right lane could decide to go to the same spot in the middle lane. From an algorithmic point of view, this is possible because the lane changing decision is based on the conﬁguration on time t; but it is also an entirely realistic situation.4 To avoid collision we only allow lane changes in a certain direction in each time step: • IF the time step is even THEN start procedure lane changing decision to the left for cars on the middle and then on the right lane • IF the time step is odd THEN start procedure lane changing decision to the right side for cars on the middle and then on the left lane Thus, left lane changes occur only on even time steps, right lane changes occur only on odd time steps. This behavior is collision free. C. Lane changing for plan following Vehicles in TRANSIMS follow route plans, i.e. they know ahead of time the sequence of links they intend to follow. This means that, when they approach an intersection, they need to get into the correct lanes in order to make the intended turn. For example, a vehicle which intends, according to its route plan, to make a left turn at the next intersection needs to get into one of the lanes which actually allow a left turn. This is achieved in TRANSIMS by supplementing the basic lane changing rules with a bias towards the intended lanes. This bias increases with increasing urgency, i.e. with decreasing distance to the intersection. Technically, this is achieved by adding another weight to the acceptance conditions for lane changing: • IF (weight1 + weight4 > weight2) AND (weight1 + weight4 > weight3) THEN change lane 4In a deeper sense, the problem is caused by the fact that the underlying decision making dynamics has a time scale which is smaller than the time resolution of the simulation. The simulation thus must resolve the conﬂict by other means.",
+          "bbox": {
+            "x0": 72.0,
+            "y0": 37.65707778930664,
+            "x1": 538.2860717773438,
+            "y1": 50.040733337402344
+          }
+        }
+      ]
+    },
+    {
+      "page": 8,
+      "paragraphs": [
+        {
+          "type": "paragraph",
+          "text": "PREPRINT October 26, 2018 6 weight4 is calculated according to weight4 = max \"d∗−d vmax , 0 # for lane changes in the desired direction as long as the vehicle is not in one of the correct lanes, cf. Fig. 1 (c). d is the remaining distance to the intersection, d∗is a parameter; both are given in the unit of “cells”. d∗is currently set to 70 cells, i.e. approx. 500 m or 1/3 of a mile, throughout the simulation. In consequence, weight4 increases from zero to d∗/vmax = 14 during the approach to the intersection. If weight4 = 0, then it does not inﬂuence lane changing decision. weight4 = 1 has the same eﬀect as a slower vehicle ahead on the same lane. Further increases of weight4 more and more override the security criterions that the forward and the backward gap on the destination lane need to be large enough. weight4 > vmax lets the vehicle make the lane change even if only the neighboring cell on the destination lane is free. D. Unprotected turning movements A necessary element of traﬃc simulations are unprotected turning movements. By this we mean that that for the movement the driver intends to make, some other lanes have priority. Examples are stop signs, yield signs, on-ramps, unprotected left turns. The general modeling principle for this in TRANSIMS is based on a gap acceptance in the interfering lanes, see Fig. 1 (d). Interfering lanes are the lanes which have priority; for example, for a stop-controlled left turn onto a major road this would be all lanes coming from the left plus the leftmost lane coming from the right. In order to accept the turn, there has to be a suﬃcient gap on each of these lanes. Note that “gap divided by the velocity of the oncoming vehicle” is the oncoming vehicle’s time headway, which is the typical measure used in the Highway Capacity Manual [8]. If one wants a time headway on an interfering lane of at least 3 seconds, then a vehicle with a velocity of 4 cells/second would have to be at least 12 cells away from the intersection. The current TRANSIMS microsimulation uses a gap acceptance (gap between intersection and nearest car to the intersection which is approaching) of 3 times the oncoming vehicle’s velocity, i.e. when the gap on each interfering lane is larger than or equal to the ﬁrst vehicle on that lane, the move is accepted. For example, if the oncoming vehicle has a speed of 3, at least 9 empty cells have to be between the oncoming vehicle and the intersection. A special case is if the oncoming vehicle has the velocity zero, in which case no gap is necessary.5 5The condition for the “case study” microsimulation of TRANSIMS [9,10] was that a movement was accepted if, for all interfering lanes, the gap was larger than vmax. That means that for fast oncoming traﬃc the acceptance was higher than in the newer version, but for low speed oncoming traﬃc the acceptance rate was lower—with the extreme case that no turns were possible against oncoming traﬃc of speed zero.",
+          "bbox": {
+            "x0": 72.0,
+            "y0": 37.65707778930664,
+            "x1": 538.2860717773438,
+            "y1": 50.040733337402344
+          }
+        }
+      ]
+    },
+    {
+      "page": 9,
+      "paragraphs": [
+        {
+          "type": "paragraph",
+          "text": "PREPRINT October 26, 2018 7 E. Signalized intersections In TRANSIMS, we distinguish between signalized intersections and unsignalized intersec- tions because they are modeled diﬀerently in TRANSIMS. In signalized intersections, the priorities are changing in time and regulated by signals. In unsignalized intersections, the priorities are ﬁxed. When a simulated vehicle approaches a signalized intersection, the algorithm ﬁrst decides if, according to its current speed, it potentially wants to leave the link, i.e. its current speed (in cells per update) is larger than or equal to the remaining number of cells on the link.6 If a vehicle wants to leave the link, the algorithm checks the “traﬃc control”, which determines if the vehicle can leave the link. If it encounters a red light, it can not leave the link and no further action is taken. If it encounters a protected (green arrow) or caution (yellow) signal, the vehicle is allowed to enter the intersection. If it encounters a permitted signal (green, for example permitted left turn against oncoming traﬃc), the vehicle checks all interfering lanes for the gap that is larger or equal to 3 times the oncoming vehicle’s velocity (see Subsec. II D above). If the movement into the intersection is accepted, the vehicle is moved into an “intersection queue”; there is one queue for each incoming lane. This queue models vehicle behavior inside an intersection. The vehicle gets a “time stamp”, before which it is not allowed to leave the intersection; this time stamp is representative for the duration of the movement through the intersection. The intersection queues have ﬁnite capacity; once they are full, no more vehicles are accepted and the vehicles start to queue up on the link. This models the ﬁnite vehicle storing capacity of an intersection. Once a vehicle is ready to leave the intersection, it moves to the ﬁrst cell on the destination link if available.7 The speed of the vehicle is not changed when it is in the intersection queue so it exits on the destination link in the ﬁrst cell with the same velocity that it had when it entered the queue. Note that vehicles turning against interfering traﬃc make their decision to accept the turn when they enter the intersection queue, not when they leave it. This can have the eﬀect that a vehicle enters the intersection queue when there is no oncoming traﬃc, but, because of other vehicles ahead of it in the same queue, cannot make its turn immediately. Yet, since the turn was already accepted, it will be executed as soon as all vehicles ahead in the same queue have cleared the queue and a cell on the destination link is available. The turn can occur during oncoming traﬃc. So in some sense vehicles will go “through” each other. Yet, note that on average the result is still correct. The approach described above will not let more vehicles through the intersection than a gap acceptance calculated when leaving the intersection queue. The above logic was chosen for simpliﬁcation purposes since unsignalized intersections (see below) do not have queues and thus need to make their acceptance decisions when entering the intersection. 6Vehicles may accelerate or slow down before they actually reach the intersection. See below. 7Algorithmically, it only “reserves” a cell. See below.",
+          "bbox": {
+            "x0": 72.0,
+            "y0": 37.65707778930664,
+            "x1": 538.2860717773438,
+            "y1": 50.040733337402344
+          }
+        }
+      ]
+    },
+    {
+      "page": 10,
+      "paragraphs": [
+        {
+          "type": "paragraph",
+          "text": "PREPRINT October 26, 2018 8 F. Unsignalized intersections Unsignalized intersections in TRANSIMS have no internal queues, i.e. vehicles go right through them.8 Also, vehicles leaving an unsignalized intersection go down the destination link as far as prescribed by their velocity, not just into the ﬁrst cell as in the signalized intersections. Apart from these two diﬀerences, unsignalized intersections are similar to signalized ones. When a simulated vehicle approaches an unsignalized intersection, the algorithm ﬁrst decides if, according to its current speed, it potentially wants to leave the link, i.e. its current speed (in cells per update) is larger than or equal to the remaining number of sites on the link. If a vehicle wants to leave the link, the algorithm checks the “traﬃc control”, which determines if the vehicle can leave the link. Currently occuring traﬃc controls are: no control, yield, and stop. If a “no control” is encountered, the vehicle is moved to its destination cell without any further checks. For example, if a vehicle has a velocity of 5 cells per update and 2 more cells to go on its link, then it attempts to go 3 cells into the destination link. If that cell is already reserved (either by another “reservation” or by a real vehicle), then the next closer cell is attempted, etc., until the algorithm either ﬁnds an empty cell or returns that the destination lane is full. “No control” is usually used for the major directions, i.e. for the lanes which have priority. If a “yield” is encountered, the vehicle checks the gap on all interfering lanes. According to the same rules as above, on all interfering lanes the gap needs to be larger or equal three times the ﬁrst vehicle’s speed on that lane. If the movement is accepted, the destination cell is selected according to the same rules as with the “no control” case. If it encounters a “stop”, the vehicle is brought to a stop. Only when the vehicle has a velocity of zero for at least one time step on the last cell of the link, is it allowed to continue. If the result of the regular velocity update indeed accelerates the vehicle,9 then it attempts to go through the intersection. On all interfering lanes the gap, according to the same rules as above, needs to be larger or equal to three times the ﬁrst vehicle’s speed on that lane. If the movement is accepted, a vehicle coming from a stop sign will always go to the ﬁrst cell on the destination link (if empty) and will have a velocity of one. G. Parking locations In the current TRANSIMS microsimulation, vehicular trips start and end at parking loca- tions. Each link in the microsimulation, except for freeway ramps, freeway links, and some 8Again, technically the vehicles only reserve cells on the destination links. The actual move through the intersection happens later and can also be postponed if after the velocity update the vehicle actually does not make it to the intersection. 9I.e. there is a probability of 1 −pnoise that the vehicle will not accelerate in the given time step.",
+          "bbox": {
+            "x0": 72.0,
+            "y0": 37.65707778930664,
+            "x1": 538.2860717773438,
+            "y1": 50.040733337402344
+          }
+        }
+      ]
+    },
+    {
+      "page": 11,
+      "paragraphs": [
+        {
+          "type": "paragraph",
+          "text": "PREPRINT October 26, 2018 9 “virtual” links such as centroid connectors, has at least one parking location. Parking lo- cations thus represent the aggregated parking options on that link. Parking locations have rules about how vehicles enter and exit the simulation: • Each vehicle in TRANSIMS has a complete route plan, together with a starting time. At the starting time, the vehicle is added to a queue of vehicles that want to leave the same parking location. When the vehicle is the ﬁrst one in the queue, it attempts to enter the link. The acceptance logic is in spirit similar to the logic of the unsignalized intersections, i.e. vehicles check the available gap and make their decision based on that. Parking accessory logic is not the focus of the current paper, and since that logic may change in TRANSIMS in the near future and we also expect no inﬂuence on the results presented here, we omit further technical details. • A vehicle that has reached its destination parking location according to its plan will leave the microsimulation. It is simply removed from the traﬃc. H. Parallel logic TRANSIMS is designed to run on parallel computers, such as coupled workstations, desktop multi-processors, or supercomputers. The parallelization approach used for the microsimu- lation is a geographical distribution, i.e. diﬀerent geographical parts of the simulated area are computed on diﬀerent CPUs. The current TRANSIMS microsimulation has these boundaries always in the middle of links. This is done in order to keep the complexity of the parallel computing logic as far away as possible from the complexity of the intersection logic. Information needs to be exchanged at the boundaries several times per update in order to keep the dynamics consistent. For example, if a vehicle changes lanes and end up close in front of another one, that other one is probably forced to brake. Now, if the lane changing vehicle is on one CPU and the following one on another, one needs to communicate the lane change. This will be called “Update boundaries” in the following section. I. Complete scheduling For a complete transportation microsimulation, we need to specify when movements are ac- cepted, and also how conﬂicts are resolved. For example, vehicles simultaneously attempting to change lanes into the middle lane represent such a conﬂict. Another conﬂict is two vehicles from two diﬀerent links competing for the same site on the destination link. The complete update of the current TRANSIMS microsimulation is as follows. Assume that the state at time t is the result of the last update. Let t1, t2, etc. be intermediate partial time steps.",
+          "bbox": {
+            "x0": 72.0,
+            "y0": 37.65707778930664,
+            "x1": 538.2860717773438,
+            "y1": 50.040733337402344
+          }
+        },
+        {
+          "type": "heading",
+          "text": "1. Vehicles which are ready to leave intersection queues from signalized intersections",
+          "bbox": {
+            "x0": 86.28009796142578,
+            "y0": 704.0733642578125,
+            "x1": 538.079833984375,
+            "y1": 730.4404296875
+          }
+        },
+        {
+          "type": "paragraph",
+          "text": "reserve cells on outgoing lanes. They only attempt to reserve the ﬁrst cell on the link;",
+          "bbox": {
+            "x0": 86.28009796142578,
+            "y0": 704.0733642578125,
+            "x1": 538.079833984375,
+            "y1": 730.4404296875
+          }
+        }
+      ]
+    },
+    {
+      "page": 12,
+      "paragraphs": [
+        {
+          "type": "paragraph",
+          "text": "PREPRINT October 26, 2018 10 their velocity is the same as it was when they entered the intersection. When the cell is occupied (either by another “reservation” or by a vehicle), then the vehicle cannot leave the intersection. Note that there can be a conﬂict between diﬀerent queues for the same destination cell. The current solution in TRANSIMS is that queues are served on a ﬁrst come ﬁrst served basis in some arbitrarily deﬁned way, i.e. a queue which happens to be treated earlier in the microsimulation has a slightly higher chance of unloading its vehicles. — Result: t1 information.",
+          "bbox": {
+            "x0": 72.0,
+            "y0": 37.65707778930664,
+            "x1": 538.2860107421875,
+            "y1": 50.040733337402344
+          }
+        },
+        {
+          "type": "heading",
+          "text": "2. Vehicles change Lanes. Use information from time t1 to calculate situation at time t2.",
+          "bbox": {
+            "x0": 86.27978515625,
+            "y0": 184.11386108398438,
+            "x1": 538.200439453125,
+            "y1": 197.88099670410156
+          }
+        },
+        {
+          "type": "heading",
+          "text": "3. Exit from Parking. Results in t3 information.",
+          "bbox": {
+            "x0": 86.28057861328125,
+            "y0": 208.47366333007812,
+            "x1": 333.5998229980469,
+            "y1": 222.2407989501953
+          }
+        },
+        {
+          "type": "heading",
+          "text": "4. Exchange boundary information for parallel computing.",
+          "bbox": {
+            "x0": 86.280029296875,
+            "y0": 232.95376586914062,
+            "x1": 386.75958251953125,
+            "y1": 244.92091369628906
+          }
+        },
+        {
+          "type": "heading",
+          "text": "5. Non-signalized intersections reserve sites on target lanes. Note that there can be a",
+          "bbox": {
+            "x0": 86.280029296875,
+            "y0": 257.3139953613281,
+            "x1": 538.2862548828125,
+            "y1": 384.8408203125
+          }
+        },
+        {
+          "type": "paragraph",
+          "text": "conﬂict of two incoming links competing for the same destination cell. The current solution in TRANSIMS is that links are served on a ﬁrst come ﬁrst served basis, i.e. a link which happens to be treated earlier in the microsimulation has a slightly higher chance of unloading its vehicles. Note that this conﬂict only happens between minor links. Major links never compete for the same outgoing link except when there is a network coding error; and for the competition between major and minor links, the major link always wins because of the interfering lanes conditions.10 Result: t4 information.",
+          "bbox": {
+            "x0": 86.280029296875,
+            "y0": 257.3139953613281,
+            "x1": 538.2862548828125,
+            "y1": 384.8408203125
+          }
+        },
+        {
+          "type": "heading",
+          "text": "6. Calculate speeds and do movements. If a vehicle scheduled for an intersection does",
+          "bbox": {
+            "x0": 86.28009033203125,
+            "y0": 397.2338562011719,
+            "x1": 538.2559204101562,
+            "y1": 483.24078369140625
+          }
+        },
+        {
+          "type": "paragraph",
+          "text": "not go through the intersection as a result of the velocity update, the reservation is cancelled. Vehicles which go through unsignalized intersections have p set to zero, i.e. if it turns out that the result of the velocity update indeed brings them into the intersection, they need to go to the site on the destination lane which was reserved earlier. Result: t5 = t + 1 information.",
+          "bbox": {
+            "x0": 86.28009033203125,
+            "y0": 397.2338562011719,
+            "x1": 538.2559204101562,
+            "y1": 483.24078369140625
+          }
+        },
+        {
+          "type": "heading",
+          "text": "7. Exchange boundary information and migrate vehicles for parallel computing.",
+          "bbox": {
+            "x0": 86.27983093261719,
+            "y0": 493.9537353515625,
+            "x1": 495.4796142578125,
+            "y1": 505.9208984375
+          }
+        },
+        {
+          "type": "paragraph",
+          "text": "III. STANDARDIZED FLOW TEST SUITE FOR SIMULATION MODELS In order to control the eﬀect of driving rules, TRANSIMS provides controlled tests for traﬃc ﬂow behavior. These tests are simpliﬁed situations where elements of the microsimulation can be tested in isolation. This test suite uses the standard microsimulation code in the same way it is used for full-scale regional simulations, and it also uses the same input and output facilities: The test network is currently deﬁned via a table in an oracle data base, in the same format as the Dallas/Fort Worth network is kept. Input of vehicles is, following individual vehicle’s plans, via parking locations, the same way vehicles enter regional simulations. 10Note that the situation slightly diﬀerent when the speed of the vehicle on the major link is zero—see below.",
+          "bbox": {
+            "x0": 94.9197998046875,
+            "y0": 535.8446655273438,
+            "x1": 515.400390625,
+            "y1": 546.7537841796875
+          }
+        }
+      ]
+    },
+    {
+      "page": 13,
+      "paragraphs": [
+        {
+          "type": "paragraph",
+          "text": "PREPRINT October 26, 2018 11 Output is collected on certain parts of the network on a second-by-second basis, the same way it can be collected for regional microsimulations. The collected output is then post- processed to obtain the aggregated results presented in this paper. The test cases we look at in this paper are the following (see also Fig. 1 (e)): • One-lane traﬃc, in order to see if car following behavior generates reasonable funda- mental diagrams. • Three-lane traﬃc, in order to see if the addition of passing lane changing behavior still generates reasonable fundamental diagrams, and in order to look at lane usage. • Stop sign, yield sign, and left turns against oncoming traﬃc, in order to see it the logic for non-signalized intersections generates acceptable ﬂow rates. • A signalized intersection, in order to see of we obtain reasonable ﬂow rates, and in order to check lane changing behavior for plan following purposes. A. Measured quantities We look at three minute averages of the following quantities: • Local Flow. Flow q is deﬁned as usual by: q = N T [vehicles/hour] N is the number of cars which pass a certain site at a time period T. • Local Density. Density is in principle easily deﬁned, ρ = N/L, where N is the number of vehicles on a piece of roadway of length L. Yet, given current sensoring technology, this is not easy to achieve since one would need a sensor which counts, say once a second, cars on a predeﬁned stretch of length L of the roadway. For that reason, empirical papers sometimes resort to occupancy, which is the fraction of time a given sensor has been occupied by a vehicle. Current TRANSIMS measures density according to its original deﬁnition, i.e., once a time step, we count the number of vehicles on a stretch of roadway of L = 5 sites = 5 × 7.5 m = 37.5 m.11 We add these counts for k = 180 measurement events and then divide the resulting number by L and by k: ρ = N k ∗L 11The “magical” number of L = 5 sites is equal to the maximum velocity of vmax = 5 sites/update. This ensures that each vehicle is counted at least once.",
+          "bbox": {
+            "x0": 72.0,
+            "y0": 37.65707778930664,
+            "x1": 538.2860107421875,
+            "y1": 50.040733337402344
+          }
+        }
+      ]
+    },
+    {
+      "page": 14,
+      "paragraphs": [
+        {
+          "type": "paragraph",
+          "text": "PREPRINT October 26, 2018 12 The result can be scaled to convenient units, for example “vehicles per km”. Note that this way of computing density averages the counts over a length of 37.5 m, which is longer than the usual sensor extensions. The eﬀect of this should be system- atically studied. • Local velocity. It is well known that one can measure velocity either analogous to our ﬂow deﬁnition (local velocity) or analogous to our density deﬁnition (space- averaged velocity). Under non-stationary conditions, the measurements give diﬀerent results, since, for example, the ﬁrst deﬁnition never counts vehicles with velocity zero. Local velocity is easier to measure in practice; the space-averaged velocity is easier to interpret since it is equal to the travel velocity and it is also the velocity which needs to be used in the fundamental relationship between ﬂow, density, and velocity, q = ρ · v. Since in a simulation model, both are similarly easy to measure, we measure the more useful travel velocity. Once a time step, we sum up the individual velocities of all vehicles on a stretch of roadway of L = 5 sites = 5 × 7.5 m = 37.5 m. We add these sums for k = 180 measurement events and then divide the resulting number by N and by k, where N is the same number as obtained during the density measurement above: v = P v k ∗N • Lane usage. Lane usage of a particular lane is the number of cars on this lane divided by the number of cars on all lanes. It can be computed as: fi = ρi Pn j=1 ρj · n , where i is the lane we look at and n is the number of lanes. B. Test networks Essentially two test networks are used: a circle of 1 000 sites = 0.75 km in various conﬁgura- tions, and a simple signalized intersection. Most of the test are run on the circle networks. The circle can have one or two or three lanes. In all tests, the circle is slowly loaded with traﬃc via a parking location at x = 1 sites. Velocity, ﬂow, and density are measured on 486 ≤x ≤490, thus generating the fundamental diagrams for one-lane, two-lane, and three-lane traﬃc. Since the circle gets slowly loaded, the complete fundamental diagram is generated during one run. For testing yield signs and stop signs, an incoming lane is added on the right side of traﬃc at x = 501 (i.e. the ﬁrst cell for the incoming traﬃc is 501). The characteristics of the incoming traﬃc is measured on a measurement box on the last 5 sites of the incoming lane. The incoming lane is operated at maximum ﬂow, i.e. with as many vehicles as possible entering at its beginning. The incoming vehicles are removed at x = 900 via a parking accessory.",
+          "bbox": {
+            "x0": 72.0,
+            "y0": 37.65707778930664,
+            "x1": 538.2860107421875,
+            "y1": 50.040733337402344
+          }
+        }
+      ]
+    },
+    {
+      "page": 15,
+      "paragraphs": [
+        {
+          "type": "paragraph",
+          "text": "PREPRINT October 26, 2018 13 The result of this measurement is typically a diagram showing the ﬂow of incoming vehicles on the y-axis versus the ﬂow on the circle on the x-axis. For testing left turns against oncoming traﬃc, an opposing lane is added so that it ends at x = 500. The traﬃc control here is again a “yield” logic; the diﬀerence from before is that vehicles only traverse the interfering traﬃc, they do not join it. Last, a three-lane intersection approach is used. The left lane makes a left turn, the middle lane goes straight, the right lane makes a right turn. Incoming vehicles have plans about their intended movement at the intersection and attempt to reach the corresponding lane. The intersection has signals with 1 minute green phase and 1 minute red phase. The typical output from this run is the ﬂow of vehicles which go through the intersection, and the number of vehicles which cannot make their intended turn because they did not reach their lane. The results are shown in Figs. 2 to 4. Note that the HCM has the same curves for stop sign and for yield sign, whereas we obtain higher ﬂows through yield signs, as should be the case. IV. SOME STUDY RESULTS Most of the results presented here were generated with an experimental code. The disad- vantage of an experimental code is that actual implementation in the production version may still introduce changes in the results due to small discrepancies. The advantage is that turnover (compile times, complexity of code, etc.) is much higher than with a production version. We used that advantage to test many diﬀerent rules. In the following, we want to present a small subsection of tests. All results presented in this section refer to the situation of a 1-lane minor street merging into a 1-lane major street, with the intersection control being a yield sign. Fig. 5 (a) repeats the result from above for convenience. Figs. 5 (b)–(c) show the result of diﬀerent average free speeds (e.g. result of speed limits) in the simulation (same speed limit for both streets). A high average free speed of approx. 130 km/h (≈80 mph, generated by vmax = 5), maybe a freeway merge, generates a ﬂow of approx. 2000 veh/hour/lane in the incoming lane when there is no traﬃc on the major road. From there, maximum incoming ﬂow decreases continuously. Lower average free speeds of approx. 75 km/h (50 mph) and 50 km/h (30 mph) generate lower maximum incoming ﬂows and are generally closer to the Highway Capacity Manual curve. Yet, it should also be clear from these curves that the ﬂow on the minor road as a function of ﬂow on the major road is also a function of the speed limit and not only of the gap acceptance, which is constant in all three simulations. Another series of experiments shows the eﬀect of diﬀerent acceptance logics. Fig. 5 (d) shows, when compared to Fig. 5 (a), the diﬀerence between “accept when gap ≥3vback” vs. “accept when gap > 3vback”. This seems like a negligible diﬀerence in the rules; yet, the results are quite diﬀerent in the congested regime. Whereas in the ﬁrst, quite many vehicles are able to get into the congested major road, in the second, only few of them make it. The diﬀerence is easiest explained by looking at a vehicle of speed zero on the major road just in front of the merge point, with space for a vehicle downstream of the merge point. With the ﬁrst rule, a vehicle at the yield sign will accept the move and move in front of the vehicle",
+          "bbox": {
+            "x0": 72.0,
+            "y0": 37.65707778930664,
+            "x1": 538.2860107421875,
+            "y1": 50.040733337402344
+          }
+        }
+      ]
+    },
+    {
+      "page": 16,
+      "paragraphs": [
+        {
+          "type": "paragraph",
+          "text": "PREPRINT October 26, 2018 14 on the major road, in the second case, it will not. Both scenarios seem to be plausible to us; only systematic measurements can probably resolve which one is better for a simulation model. A last series of experiments shows the eﬀect of diﬀerent values for the gap acceptance. Figs. 5 (e) and (f) show “accept when gap > vback and gap > vmax. Clearly, more vehicles are accepted, leading to a higher ﬂow of turning vehicles as a function of the ﬂow on the major road. Note that the ﬂow via the yield sign is never higher than 1800 minus the ﬂow on the major road. This reﬂects the fact that the major road cannot have a higher ﬂow than 1800 veh/h/lane (free speed approx 50 mph); traﬃc through the yield sign can thus at most ﬁll the major road to capacity. This explains why the much weaker gap acceptances to not produce even more diﬀerence in the regime where the major road is uncongested. The situation is clearly diﬀerent for unprotected turns across instead of into traﬃc, as can be seen for the left turns in the next section. V. COMPARISON TO CASE STUDY LOGIC The gap acceptance logic presented here and used in the current TRANSIMS microsimula- tion is diﬀerent from the logic used in the “Dallas/Fort Worth Case Study” [9,10]. The logic during that case study was: “Accept an unprotected movement if in all interfering lanes the gap is larger than vmax = 5.” This means that at low ﬂow rates on the major road, more turns were accepted, whereas at high ﬂow rates on the major road, less turns were accepted. Fig. 6 compares the results for the current gap-acceptance logic and the one used in the case study for the case where the major road is a 3-lane road. Note that the results for the turns into other traﬃc are not that much diﬀerent whereas the result for the turns across other traﬃc yields dramatically higher ﬂows with the case study logic. This is due to the fact that for turns into other traﬃc, there is a capacity constraint of the form that the joint ﬂows from the major and the incoming road cannot exceed capacity of the major road. Such a constraint obviously does not exist for turns across the major road. VI. SUMMARY AND CONCLUSION In transportation simulation models for larger scale questions such as planning, the ﬂow characteristics of the traﬃc dynamics are in some sense more important than the microscopic driving dynamics of the vehicles itself. This becomes especially true since a “complete” representation of human driving is impossible anyway, both due to knowledge constraints and due to computational constraints. Yet, calibrating a traﬃc simulation model against all types of desired behavior (for example against all HCM curves and values mentioned in this paper) seems a hopeless task given the high degrees of freedom. TRANSIMS thus attempts to generate plausible macroscopic behavior from simpliﬁed mi- croscopic rules. This paper described the more important aspects of these rules as currently implemented or under implementation in TRANSIMS. Before we implement rules in the TRANSIMS production version, we usually try to run systematic studies with more exper-",
+          "bbox": {
+            "x0": 72.0,
+            "y0": 37.65707778930664,
+            "x1": 538.2860107421875,
+            "y1": 50.040733337402344
+          }
+        }
+      ]
+    },
+    {
+      "page": 17,
+      "paragraphs": [
+        {
+          "type": "paragraph",
+          "text": "PREPRINT October 26, 2018 15 imental versions. The results of the traﬃc ﬂow behavior from that study were presented. Also, we showed the eﬀects of some changes in the rules for the example of a yield sign. Finally, some comparisons were made between the logic currently under implementation and the logic used for the Dallas/Fort Worth case study. One problem with microscopic approaches is that, in spite of all possible diligence, subtle diﬀerences between design and actual implementation can make a signiﬁcant diﬀerence in the macroscopic outcome. For that reason, this paper should also be seen as an argument for a standardized traﬃc ﬂow test suite for simulation models. We propose that simulation models, when used for studies, should ﬁrst run these tests to see how the macroscopic ﬂow dynamics actually is. We think that the combination of results presented in Figs. 2 to 4 are a good test set, although extensions may be necessary in the future (e.g. merge lanes, weaving, etc.). We will attempt to provide future TRANSIMS results also with updated versions of the results of the traﬃc ﬂow tests.",
+          "bbox": {
+            "x0": 72.0,
+            "y0": 37.65707778930664,
+            "x1": 538.2860107421875,
+            "y1": 50.040733337402344
+          }
+        }
+      ]
+    },
+    {
+      "page": 18,
+      "paragraphs": [
+        {
+          "type": "paragraph",
+          "text": "PREPRINT October 26, 2018 16",
+          "bbox": {
+            "x0": 72.0,
+            "y0": 37.65707778930664,
+            "x1": 538.2860107421875,
+            "y1": 50.040733337402344
+          }
+        },
+        {
+          "type": "heading",
+          "text": "REFERENCES",
+          "bbox": {
+            "x0": 256.79998779296875,
+            "y0": 71.20061492919922,
+            "x1": 353.5096740722656,
+            "y1": 85.56116485595703
+          }
+        },
+        {
+          "type": "paragraph",
+          "text": "[1] TRANSIMS, TRansportation ANalysis and SIMulation System, Los Alamos National Laboratory, Los Alamos, U.S.A. See http://www-transims.tsasa.lanl.gov. [2] Kai Nagel. Freeway traﬃc, cellular automata, and some (self-organizing) criticality. In R.A. de Groot and J. Nadrchal, editors, Physics Computing ’92, page 419. World Scientiﬁc, 1993. [3] K. Nagel and M. Schreckenberg. A cellular automaton model for freeway traﬃc. J. Phys. I France, 2:2221, 1992. [4] C.L. Barrett, S. Eubank, K. Nagel, J. Riordan, and M. Wolinsky. Issues in the repre- sentation of traﬃc using multi-resolution cellular automata. Los Alamos Unclassiﬁed Report 95-2658, Los Alamos National Laboratory, 1995. [5] K. Nagel. Particle hopping models and traﬃc ﬂow theory. Phys. Rev. E, 53(5):4655, 1996. [6] K. Nagel. Fluid-dynamical vs. particle hopping models for traﬃc ﬂow. In D.E.Wolf, M.Schreckenberg, and A.Bachem, editors, Traﬃc and granular ﬂow, page 41. World Scientiﬁc, Singapore, 1996. [7] M. Rickert, K. Nagel, M. Schreckenberg, and A. Latour. Two lane traﬃc simulations using cellular automata. Physica A, 231:534, 1996. [8] Transportation Research Board. Highway Capacity Manual. Special Report No. 209. National Research Council, Washington, D.C., 3rd edition, 1994. [9] R.J. Beckman et al. TRANSIMS Dallas/Fort Worth case study report. Technical report, Los Alamos National Laboratory, TSA-Division, Los Alamos, NM 87545, 1997. To be released. [10] K. Nagel and C.L.Barrett. Using microsimulation feedback for trip adaptation for real- istic traﬃc in Dallas. International Journal of Modern Physics C, 8(3):505–526, 1997.",
+          "bbox": {
+            "x0": 77.87998962402344,
+            "y0": 104.67355346679688,
+            "x1": 538.3197631835938,
+            "y1": 116.64070892333984
+          }
+        }
+      ]
+    },
+    {
+      "page": 19,
+      "paragraphs": [
+        {
+          "type": "paragraph",
+          "text": "PREPRINT October 26, 2018 17 FIGURES 1 5 2 gap 1 vehicle with velocity 1 cell per time-step (a) 5 3 2 2 forward gap backward gap gap forward gap gap Situation I Situation II 5 2 3 backward gap (b) Wrong Lane Turn Lane Weight 4 12 12 12 0 1 1 1 1 1 2 13 13 12 13 13 13 14 No Weight 4 added for lane changing 4 3 Weight 4 added for lane changing (c) 1 5 3 5 3 2 1 2 3 gap = 3 * velocity(oncoming vehicle) (d) Location x=1 Flow Parking Lane Box Opposing Lane Measurement Incoming Parking Accessory x=501 x=490 x=486 x=900 (e)",
+          "bbox": {
+            "x0": 72.0,
+            "y0": 37.65707778930664,
+            "x1": 538.2860107421875,
+            "y1": 50.040733337402344
+          }
+        }
+      ]
+    },
+    {
+      "page": 20,
+      "paragraphs": [
+        {
+          "type": "paragraph",
+          "text": "PREPRINT October 26, 2018 18 FIG. 1. (a) Deﬁnition of gap and examples for one-lane update rules. Traﬃc is moving to the right. The leftmost vehicle accelerates to velocity 2 with probability 0.8 and stays at velocity 1 with probability 0.2. The middle vehicle slows down to velocity 1 with probability 0.8 and to velocity 0 with probability 0.2. The right most vehicle accelerates to velocity 3 with probability 0.8 and stays at velocity 2 with probability 0.2. Velocities are in “cells per time step”. All vehicles are moved according to their velocities at a later phase of the update. (b) Illustration of lane changing rules. Traﬃc is moving to the right; only lane changes to the left are considered. Situation I: The leftmost vehicle on the bottom lane will change to the left because (i) the forward gap on its own lane, 1, is smaller than its velocity, 3; (ii) the forward gap in the other lane, 10, is larger than the gap on its own lane, 1; (iii) the forward gap is large enough compared to its own velocity: weight2 = v −gapf = 3 −10 = −7 < 1 = weight1; (iv) the backward gap is large enough: weight3 = vmax −gapb = 5 −6 = −1 < 1 = weight1. Situation II: The second vehicle from the right on the right lane will not accept a lane change because the gap backwards on the target lane is not suﬃcient. (c) Value of weight4 when in wrong lane during the approach to the intersection. (d) Example of a left turn against oncoming traﬃc. The turn is accepted because on all three oncoming lanes, the gap is larger or equal to three times the ﬁrst oncoming vehicle’s velocity. (e) Test networks.",
+          "bbox": {
+            "x0": 72.0,
+            "y0": 37.65707778930664,
+            "x1": 538.2860107421875,
+            "y1": 50.040733337402344
+          }
+        }
+      ]
+    },
+    {
+      "page": 21,
+      "paragraphs": [
+        {
+          "type": "paragraph",
+          "text": "PREPRINT October 26, 2018 19 0 10 20 30 40 50 60 70 80 90 100 0 500 1000 1500 2000 Density [v/km/lane] Flow [v/hr/lane] Fundamental Diagram for 1−lane Circle simulation Circle  = 1000 p_noise = 0.2 V_MAX   = 5 0 500 1000 1500 2000 2500 0 20 40 60 80 100 120 140 Flow [veh/hr/lane] Velocity [km/hr] Flow − Velocity Diagram for 1−lane Circle simulation Circle  = 1000 p_noise = 0.2 V_MAX   = 5 0 10 20 30 40 50 60 70 80 90 100 0 20 40 60 80 100 120 140 Density [veh/km/lane] Velocity [km/hr] Density − Velocity Diagram for 1−lane Circle simulation Circle  = 1000 p_noise = 0.2 V_MAX   = 5 (a) 0 5 10 15 20 25 800 850 900 950 1000 1050 1100 1150 1200 Flow T−Intersection [veh/hr/lane] Time [min] Time − Flow Diagram for traffic light controlled T−intersection (b) FIG. 2. (a) One-lane traﬃc: Flow vs. density, travel velocity vs. ﬂow, and travel velocity vs. density. (b) Number of vehicles going through the intersection and number of vehicles “oﬀplan” per green phase, re-scaled to hourly ﬂow rates per lane.",
+          "bbox": {
+            "x0": 72.0,
+            "y0": 37.65707778930664,
+            "x1": 538.2860107421875,
+            "y1": 50.040733337402344
+          }
+        }
+      ]
+    },
+    {
+      "page": 22,
+      "paragraphs": [
+        {
+          "type": "paragraph",
+          "text": "PREPRINT October 26, 2018 20 0 10 20 30 40 50 60 70 80 90 100 0 500 1000 1500 2000 Density [v/km/lane] Flow [v/hr/lane] Fundamental Diagram for 3−lane Circle simulation Circle  = 1000 p_noise = 0.2 V_MAX   = 5 0 500 1000 1500 2000 2500 0 20 40 60 80 100 120 140 Flow [veh/hr/lane] Velocity [km/hr] Flow − Velocity Diagram for 3−lane Circle simulation Circle  = 1000 p_noise = 0.2 V_MAX   = 5 0 10 20 30 40 50 60 70 80 90 100 0 20 40 60 80 100 120 140 Density [veh/km/lane] Velocity [km/hr] Density − Velocity Diagram for 3−lane Circle simulation Circle  = 1000 p_noise = 0.2 V_MAX   = 5 0 500 1000 1500 2000 2500 0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1 Flow [veh/hr/lane] Per Lane Usage [density in lane / density all lanes] Lane Usage − Flow Diagram for 3−lane Circle simulation Right and Middle Lanes 0 10 20 30 40 50 60 70 80 90 100 0 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1 Density [veh/km/lane] Per Lane Usage [density in lane / density all lanes] Lane Usage − Density Diagram for 3−lane Circle simulation Right and Middle Lanes FIG. 3. Three-lane circle: Flow vs. density, travel velocity vs. ﬂow, travel velocity vs. density, lane usage vs. ﬂow, and land usage vs. density. The asymmetry in the lane usage at low densities is due to the fact that the parking locations start ﬁlling in vehicles on the right lane, and they only move to the left when traﬃc on the right lane becomes dense.",
+          "bbox": {
+            "x0": 72.0,
+            "y0": 37.65707778930664,
+            "x1": 538.2860107421875,
+            "y1": 50.040733337402344
+          }
+        }
+      ]
+    },
+    {
+      "page": 23,
+      "paragraphs": [
+        {
+          "type": "paragraph",
+          "text": "PREPRINT October 26, 2018 21 0 200 400 600 800 1000 1200 1400 1600 1800 2000 0 200 400 600 800 1000 1200 1400 Flow Circle [veh/hr/lane] Flow Stop Sign [veh/hr/lane] Flow − Flow Diagram for 1−lane Circle simulation Circle  = 1000 p_noise = 0.2 V_MAX   = 3 gap_back = 3 * Vel −−− HCM 0 200 400 600 800 1000 1200 1400 1600 1800 2000 0 200 400 600 800 1000 1200 1400 Flow Circle [veh/hr/lane] Flow Stop Sign [veh/hr/lane] Flow − Flow Diagram for 2−lane Circle simulation Circle  = 1000 p_noise = 0.2 V_MAX   = 3 gap_back = 3 * Vel −−− HCM 0 200 400 600 800 1000 1200 1400 1600 1800 2000 0 200 400 600 800 1000 1200 1400 1600 1800 2000 Flow Circle [veh/hr/lane] Flow Yield Sign [veh/hr/lane] Flow − Flow Diagram for 1−lane Circle simulation Circle  = 1000 p_noise = 0.2 V_MAX   = 3 gap_back = 3 * Vel −−− HCM 0 200 400 600 800 1000 1200 1400 1600 1800 2000 0 200 400 600 800 1000 1200 1400 1600 1800 2000 Flow Circle [veh/hr/lane] Flow Yield Sign [veh/hr/lane] Flow − Flow Diagram for 2−lane Circle simulation Circle  = 1000 p_noise = 0.2 V_MAX   = 3 gap_back = 3 * Vel −−− HCM 0 200 400 600 800 1000 1200 1400 1600 1800 2000 0 200 400 600 800 1000 1200 1400 1600 1800 2000 Flow Circle [veh/hr/lane] Flow Left Turn [veh/hr/lane] Flow − Flow Diagram for 1−lane Circle simulation Circle  = 1000 p_noise = 0.2 V_MAX   = 3 gap_back = 3 * Vel −− HCM 0 200 400 600 800 1000 1200 1400 1600 1800 2000 0 200 400 600 800 1000 1200 1400 1600 1800 2000 Flow Circle [veh/hr/lane] Flow Left Turn [veh/hr/lane] Flow − Flow Diagram for 2−lane Circle simulation Circle  = 1000 p_noise = 0.2 V_MAX   = 3 gap_back = 3 * Vel −− HCM FIG. 4. Flow through stop sign, yield sign, and unprotected left turn. Left column: one-lane traﬃc on major road (circle). Right column: two-lane traﬃc on major road (circle). Solid line: Highway Capacity Manual [8]. Note that for “left turn across two lanes” (bottom right) the interfering volume is the sum of both lanes, i.e. twice the value show on the x-axis.",
+          "bbox": {
+            "x0": 72.0,
+            "y0": 37.65707778930664,
+            "x1": 538.2860107421875,
+            "y1": 50.040733337402344
+          }
+        }
+      ]
+    },
+    {
+      "page": 24,
+      "paragraphs": [
+        {
+          "type": "paragraph",
+          "text": "PREPRINT October 26, 2018 22 0 200 400 600 800 1000 1200 1400 1600 1800 2000 0 200 400 600 800 1000 1200 1400 1600 1800 2000 Flow Circle [veh/hr/lane] Flow Yield Sign [veh/hr/lane] Flow − Flow Diagram for 1−lane Circle simulation Circle  = 1000 p_noise = 0.2 V_MAX   = 3 gap_back > 3 * Vel −−− HCM 0 200 400 600 800 1000 1200 1400 1600 1800 2000 0 200 400 600 800 1000 1200 1400 1600 1800 2000 Flow Circle [veh/hr/lane] Flow Yield Sign [veh/hr/lane] Flow − Flow Diagram for 1−lane Circle simulation Circle  = 1000 p_noise = 0.2 V_MAX   = 5 gap_back > 3 * Vel 0 200 400 600 800 1000 1200 1400 1600 1800 2000 0 200 400 600 800 1000 1200 1400 1600 1800 2000 Flow Circle [veh/hr/lane] Flow Yield Sign [veh/hr/lane] Flow − Flow Diagram for 1−lane Circle simulation Circle  = 1000 p_noise = 0.2 V_MAX   = 2 gap_back > 3 * Vel 0 200 400 600 800 1000 1200 1400 1600 1800 2000 0 200 400 600 800 1000 1200 1400 1600 1800 2000 Flow Circle [veh/hr/lane] Flow Yield Sign [veh/hr/lane] Flow − Flow Diagram for 1−lane Circle simulation Circle  = 1000 p_noise = 0.2 V_MAX   = 3 gap_back >= 3 * Vel 0 200 400 600 800 1000 1200 1400 1600 1800 2000 0 200 400 600 800 1000 1200 1400 1600 1800 2000 Flow Circle [veh/hr/lane] Flow Yield Sign [veh/hr/lane] Flow − Flow Diagram for 1−lane Circle simulation Circle  = 1000 p_noise = 0.2 V_MAX   = 3 gap_back > Vel 0 200 400 600 800 1000 1200 1400 1600 1800 2000 0 200 400 600 800 1000 1200 1400 1600 1800 2000 Flow Circle [veh/hr/lane] Flow Yield Sign [veh/hr/lane] Flow − Flow Diagram for 1−lane Circle simulation Circle  = 1000 p_noise = 0.2 V_MAX   = 3 gap_back > V_MAX FIG. 5. Comparison between diﬀerent rules for the case of a 1-lane minor road controlled by a yield sign merging into a 1-lane major road. (a) Figure as shown earlier, i.e. “accept if gap > 3vback” and vmax = 3. (b) – (c) Eﬀect of diﬀerent maximum velocities vmax = 5 and vmax = 2. (d) Eﬀect of a slightly diﬀerent acceptance rule “accept if gap ≥3vback” (vmax = 3). (e) – (f) Eﬀect of weaker gap acceptances “accept if gap > vback” and “accept if gap > vmax” (vmax = 3).",
+          "bbox": {
+            "x0": 72.0,
+            "y0": 37.65707778930664,
+            "x1": 538.2860107421875,
+            "y1": 50.040733337402344
+          }
+        }
+      ]
+    },
+    {
+      "page": 25,
+      "paragraphs": [
+        {
+          "type": "paragraph",
+          "text": "PREPRINT October 26, 2018 23 1000 1200 1400 1600 1800 2000 2200 2400 0 100 200 300 400 500 600 Flow Circle [veh/hr/lane] Flow Stop Sign [veh/hr/lane] Flow − Flow Diagram for 3−lane Circle simulation Circle  = 1000 p_noise = 0.2 V_MAX   = 5 gap_back = 3 * Vel 1000 1200 1400 1600 1800 2000 2200 2400 0 100 200 300 400 500 600 Flow Circle [veh/hr/lane] Flow Stop Sign [veh/hr/lane] Flow − Flow Diagram (TRANSIMS) for 3−lane Circle simulation 1000 1200 1400 1600 1800 2000 2200 2400 0 100 200 300 400 500 600 700 800 Flow Circle [veh/hr/lane] Flow Yield Sign [veh/hr/lane] Flow − Flow Diagram for 3−lane Circle simulation Circle  = 1000 p_noise = 0.2 V_MAX   = 5 gap_back = 3 * Vel 1000 1200 1400 1600 1800 2000 2200 2400 0 100 200 300 400 500 600 700 800 Flow Circle [veh/hr/lane] Flow Yield Sign [veh/hr/lane] Flow − Flow Diagram (TRANSIMS) for 3−lane Circle simulation 1000 1200 1400 1600 1800 2000 2200 2400 0 100 200 300 400 500 600 700 800 Flow Circle [veh/hr/lane] Flow Left Turn [veh/hr/lane] Flow − Flow Diagram for 3−lane Circle simulation Circle  = 1000 p_noise = 0.2 V_MAX   = 5 gap_back = 3 * Vel 1000 1200 1400 1600 1800 2000 2200 2400 0 100 200 300 400 500 600 700 800 Flow Circle [veh/hr/lane] Flow Left Turn [veh/hr/lane] Flow − Flow Diagram (TRANSIMS) for 3−lane Circle simulation FIG. 6. Comparison between current TRANSIMS microsimulation gap acceptance logic and the one used in the case study where the major road has three lanes. Flow through stop sign, yield sign, and unprotected left turn into/across one-lane traﬃc on major road. Left column: current TRANSIMS microsimulation. Right column: case study TRANSIMS microsimulation. Note that the results for the turns into other traﬃc are not that much diﬀerent whereas the result for the turns across other traﬃc yields much higher ﬂows with the case study logic.",
+          "bbox": {
+            "x0": 72.0,
+            "y0": 37.65707778930664,
+            "x1": 538.2860107421875,
+            "y1": 50.040733337402344
+          }
+        }
+      ]
+    },
+    {
+      "page": 26,
+      "paragraphs": [
+        {
+          "type": "paragraph",
+          "text": "L o s A l a m o s N a t i o n a l L a b o r a t o r y 505-665-6598 FAX 505-665-2083 14 of 14 Movement v=4 v=2 v=3 Before After v=2 v=2 v=5 Rules: If gap > speed,  speed = speed + 1. If  gap < speed, speed = gap. (No collisions) Sometimes slow down for no reason.",
+          "bbox": {
+            "x0": 33.439998626708984,
+            "y0": 278.39166259765625,
+            "x1": 44.45600128173828,
+            "y1": 517.6099853515625
+          }
+        }
+      ]
+    },
+    {
+      "page": 27,
+      "paragraphs": [
+        {
+          "type": "paragraph",
+          "text": "L o s A l a m o s N a t i o n a l L a b o r a t o r y 505-665-6598 FAX 505-665-2083 13 of 14 Left Lane Change v=3 Gap = 3 Gap Forward = 5 Gap Backward = 5 Desired Speed = 4 Current Speed = 3 Weight1 =  4 > 3 AND 5 > 3 = 1 Weight2 =  3 - 5 = -2 Weight3 =  5 - 5 = 0 Lane Change = (1 > -2)  AND (1 > 0) = 1",
+          "bbox": {
+            "x0": 33.439998626708984,
+            "y0": 278.39166259765625,
+            "x1": 44.45600128173828,
+            "y1": 517.6099853515625
+          }
+        }
+      ]
+    },
+    {
+      "page": 28,
+      "paragraphs": [
+        {
+          "type": "paragraph",
+          "text": "L o s A l a m o s N a t i o n a l L a b o r a t o r y 505-665-6598 FAX 505-665-2083 12 of 14 Stop-After Movement v=1 Link 3 Link 2 Link 1 v=2 v=5 v=4 v=3 v=5 v=2",
+          "bbox": {
+            "x0": 33.439998626708984,
+            "y0": 278.39166259765625,
+            "x1": 44.45600128173828,
+            "y1": 517.6099853515625
+          }
+        }
+      ]
+    },
+    {
+      "page": 29,
+      "paragraphs": [
+        {
+          "type": "paragraph",
+          "text": "L o s A l a m o s N a t i o n a l L a b o r a t o r y 505-665-6598 FAX 505-665-2083 11 of 14 Stop--Before Movement v=0 Link 3 Link 2 Link 1 v=3 v=5 v=5 v=3 v=5 v=3",
+          "bbox": {
+            "x0": 33.439998626708984,
+            "y0": 278.39166259765625,
+            "x1": 44.45600128173828,
+            "y1": 517.6099853515625
+          }
+        }
+      ]
+    },
+    {
+      "page": 30,
+      "paragraphs": [
+        {
+          "type": "paragraph",
+          "text": "L o s A l a m o s N a t i o n a l L a b o r a t o r y 505-665-6598 FAX 505-665-2083 10 of 14 Link 4 Link 1 Link 2 Link 3",
+          "bbox": {
+            "x0": 33.439998626708984,
+            "y0": 278.39166259765625,
+            "x1": 44.45600128173828,
+            "y1": 517.6099853515625
+          }
+        }
+      ]
+    },
+    {
+      "page": 31,
+      "paragraphs": [
+        {
+          "type": "paragraph",
+          "text": "L o s A l a m o s N a t i o n a l L a b o r a t o r y 505-665-6598 FAX 505-665-2083 9 of 14 Signal - Phase 2 Link 3 Link 2 Link 1",
+          "bbox": {
+            "x0": 33.439998626708984,
+            "y0": 278.39166259765625,
+            "x1": 44.45600128173828,
+            "y1": 517.6099853515625
+          }
+        }
+      ]
+    },
+    {
+      "page": 32,
+      "paragraphs": [
+        {
+          "type": "paragraph",
+          "text": "L o s A l a m o s N a t i o n a l L a b o r a t o r y 505-665-6598 FAX 505-665-2083 8 of 14 Signal - Phase 1 Link 3 Link 2 Link 1",
+          "bbox": {
+            "x0": 33.439998626708984,
+            "y0": 278.39166259765625,
+            "x1": 44.45600128173828,
+            "y1": 517.6099853515625
+          }
+        }
+      ]
+    },
+    {
+      "page": 33,
+      "paragraphs": [
+        {
+          "type": "paragraph",
+          "text": "L o s A l a m o s N a t i o n a l L a b o r a t o r y 505-665-6598 FAX 505-665-2083 7 of 14 Rules for Trafﬁc Signal Protected, Caution (green, yellow): Proceed if intersection buffer not full. Wait (red): Move as far as possible on current link, (gap > 0), then wait. Permitted: Proceed if gap on interfering lanes >= maxV, intersection buffer not full.",
+          "bbox": {
+            "x0": 33.439998626708984,
+            "y0": 278.39166259765625,
+            "x1": 44.45600128173828,
+            "y1": 517.6099853515625
+          }
+        }
+      ]
+    },
+    {
+      "page": 34,
+      "paragraphs": [
+        {
+          "type": "paragraph",
+          "text": "L o s A l a m o s N a t i o n a l L a b o r a t o r y 505-665-6598 FAX 505-665-2083 6 of 14 Rules for Yield Proceed if: Gap on interfering lanes >= maxV. Destination cell on destination link vacant.",
+          "bbox": {
+            "x0": 33.439998626708984,
+            "y0": 278.39166259765625,
+            "x1": 44.45600128173828,
+            "y1": 517.6099853515625
+          }
+        }
+      ]
+    },
+    {
+      "page": 35,
+      "paragraphs": [
+        {
+          "type": "paragraph",
+          "text": "L o s A l a m o s N a t i o n a l L a b o r a t o r y 505-665-6598 FAX 505-665-2083 5 of 14 Rules for Stop Proceed if: Stopped for at least 1 time step. Gap on interfering lanes >= maxV. Destination cell on destination link vacant.",
+          "bbox": {
+            "x0": 33.439998626708984,
+            "y0": 278.39166259765625,
+            "x1": 44.45600128173828,
+            "y1": 517.6099853515625
+          }
+        }
+      ]
+    },
+    {
+      "page": 36,
+      "paragraphs": [
+        {
+          "type": "paragraph",
+          "text": "L o s A l a m o s N a t i o n a l L a b o r a t o r y 505-665-6598 FAX 505-665-2083 4 of 14 Plan Following Rules Lane Changes to follow plan ignored until vehicle is within the consideration distance (70 cells from intersection). Is current lane an acceptable lane for plan following? Yes - bias vehicle to stay in current lane (Weight 4 = -1). No - bias vehicle to change lanes based on distance from intersection.  (Weight 4 = MaxSpeed - (Distance From Intersection - MaxSpeed) / 13) Execute lane change rules modiﬁed to include plan following weight (Weight 4). Weight 1 = (Gap in current lane < desired speed AND Gap Forward in new lane > Gap in current lane) + Weight4.",
+          "bbox": {
+            "x0": 33.439998626708984,
+            "y0": 278.39166259765625,
+            "x1": 44.45600128173828,
+            "y1": 517.6099853515625
+          }
+        }
+      ]
+    },
+    {
+      "page": 37,
+      "paragraphs": [
+        {
+          "type": "paragraph",
+          "text": "L o s A l a m o s N a t i o n a l L a b o r a t o r y 505-665-6598 FAX 505-665-2083 3 of 14 Lane Change Rules Probability of 0.5 - skip lane change. Cell at Current Position in New Lane Must be vacant. Calculate Gap in Current Lane, Gap Forward in New Lane, Gap Backward in New Lane. Weight 1 = Gap in current lane < desired speed AND Gap Forward in new lane > Gap in current lane. [1,0] Weight 2 = Current speed - Gap Forward in new lane. Weight 3 = Max Speed - Gap Backward. Change Lanes if: (Weight 1 > Weight 2) AND (Weight 1 > Weight 3).",
+          "bbox": {
+            "x0": 33.439998626708984,
+            "y0": 278.39166259765625,
+            "x1": 44.45600128173828,
+            "y1": 517.6099853515625
+          }
+        }
+      ]
+    },
+    {
+      "page": 38,
+      "paragraphs": [
+        {
+          "type": "paragraph",
+          "text": "L o s A l a m o s N a t i o n a l L a b o r a t o r y 505-665-6598 FAX 505-665-2083 2 of 14 Stop-After Movement Link 2 Link 3 Link 1 v=3 v=5 v=1 v=3",
+          "bbox": {
+            "x0": 33.439998626708984,
+            "y0": 278.39166259765625,
+            "x1": 44.45600128173828,
+            "y1": 517.6099853515625
+          }
+        }
+      ]
+    },
+    {
+      "page": 39,
+      "paragraphs": [
+        {
+          "type": "paragraph",
+          "text": "L o s A l a m o s N a t i o n a l L a b o r a t o r y 505-665-6598 FAX 505-665-2083 1 of 14 Stop-Before Movement Link 2 Link 3 Link 1 v=0 v=4 v=5 v=3",
+          "bbox": {
+            "x0": 33.439998626708984,
+            "y0": 278.39166259765625,
+            "x1": 44.45600128173828,
+            "y1": 517.6099853515625
+          }
+        }
+      ]
+    },
+    {
+      "page": 40,
+      "paragraphs": [
+        {
+          "type": "paragraph",
+          "text": "0 200 400 600 800 1000 1200 1400 1600 1800 2000 0 200 400 600 800 1000 1200 1400 flow blue cars [v/hr] flow red cars[v/hr] Flow blue cars unprotected left turn vs flow red cars one_lane",
+          "bbox": {
+            "x0": 83.25,
+            "y0": 555.8499755859375,
+            "x1": 512.10498046875,
+            "y1": 582.0050048828125
+          }
+        }
+      ]
+    },
+    {
+      "page": 41,
+      "paragraphs": [
+        {
+          "type": "paragraph",
+          "text": "0 200 400 600 800 1000 1200 1400 1600 1800 2000 0 200 400 600 800 1000 1200 1400 Flow Circle [veh/hr/lane] Flow Stop Sign [veh/hr/lane] Flow − Flow Diagram for 3−lane Circle simulation Circle  = 1000 P_Brake = 0.2 V_MAX   = 5 gap_back = 3 * Vel",
+          "bbox": {
+            "x0": 83.25,
+            "y0": 555.8499755859375,
+            "x1": 512.10498046875,
+            "y1": 582.0050048828125
+          }
+        }
+      ]
+    },
+    {
+      "page": 42,
+      "paragraphs": [
+        {
+          "type": "paragraph",
+          "text": "0 1000 2000 3000 4000 5000 6000 7000 0 200 400 600 800 1000 1200 1400 flow blue cars [v/hr] flow red cars[v/hr] Flow blue cars unprotected left turn vs flow red cars three_lane",
+          "bbox": {
+            "x0": 83.25,
+            "y0": 555.8499755859375,
+            "x1": 552.68798828125,
+            "y1": 582.0050048828125
+          }
+        }
+      ]
+    },
+    {
+      "page": 43,
+      "paragraphs": [
+        {
+          "type": "paragraph",
+          "text": "\u0000\u0000\u0000 \u0000\u0000\u0000 \u0000\u0000\u0000 \u0001\u0001\u0001 \u0001\u0001\u0001 \u0001\u0001\u0001 5 Parking Accessory CPN I CPN II 0 10 20 30 40 50 60 70 80 90 100 0 500 1000 1500 2000 Density [v/km/lane] Flow [v/hr/lane] Fundamental Diagram for 3−lane Circle simulation Circle  = 1000 P_Brake = 0.2 V_MAX   = 5",
+          "bbox": {
+            "x0": 396.9949951171875,
+            "y0": 682.998779296875,
+            "x1": 440.1949768066406,
+            "y1": 726.1987915039062
+          }
+        }
+      ]
+    },
+    {
+      "page": 44,
+      "paragraphs": [
+        {
+          "type": "paragraph",
+          "text": "0 200 400 600 800 1000 1200 1400 1600 1800 2000 0 200 400 600 800 1000 1200 1400 Flow Circle [veh/hr/lane] Flow Stop Sign [veh/hr/lane] Flow − Flow Diagram for 1−lane Circle simulation Circle  = 1000 P_Brake = 0.2 V_MAX   = 3 gap_back = 3 * Vel",
+          "bbox": {
+            "x0": 83.25,
+            "y0": 555.8499755859375,
+            "x1": 512.10498046875,
+            "y1": 582.0050048828125
+          }
+        }
+      ]
+    },
+    {
+      "page": 45,
+      "paragraphs": [
+        {
+          "type": "paragraph",
+          "text": "0 200 400 600 800 1000 1200 1400 1600 1800 2000 0 200 400 600 800 1000 1200 1400 1600 1800 2000 Flow Circle [veh/hr/lane] Flow Yield Sign [veh/hr/lane] Flow − Flow Diagram for 3−lane Circle simulation Circle  = 1000 P_Brake = 0.2 V_MAX   = 5 gap_back = 3 * Vel",
+          "bbox": {
+            "x0": 83.25,
+            "y0": 555.8499755859375,
+            "x1": 512.10498046875,
+            "y1": 582.0050048828125
+          }
+        }
+      ]
+    },
+    {
+      "page": 46,
+      "paragraphs": [
+        {
+          "type": "paragraph",
+          "text": "0 200 400 600 800 1000 1200 1400 1600 1800 2000 0 200 400 600 800 1000 1200 1400 1600 1800 2000 Flow Circle [veh/hr/lane] Flow Yield Sign [veh/hr/lane] Flow − Flow Diagram for 1−lane Circle simulation Circle  = 1000 P_Brake = 0.2 V_MAX   = 3 gap_back = 3 * Vel",
+          "bbox": {
+            "x0": 83.25,
+            "y0": 555.8499755859375,
+            "x1": 552.68798828125,
+            "y1": 582.0050048828125
+          }
+        }
+      ]
+    },
+    {
+      "page": 47,
+      "paragraphs": [
+        {
+          "type": "paragraph",
+          "text": "0 200 400 600 800 1000 1200 1400 1600 1800 2000 0 200 400 600 800 1000 1200 1400 1600 1800 2000 Flow Circle [veh/hr/lane] Flow Yield Sign [veh/hr/lane] Flow − Flow Diagram for 1−lane Circle simulation Circle  = 1000 P_Brake = 0.2 V_MAX   = 3 gap_back = 2 * Vel",
+          "bbox": {
+            "x0": 83.25,
+            "y0": 555.8499755859375,
+            "x1": 552.68798828125,
+            "y1": 582.0050048828125
+          }
+        }
+      ]
+    },
+    {
+      "page": 48,
+      "paragraphs": [
+        {
+          "type": "paragraph",
+          "text": "0 200 400 600 800 1000 1200 1400 1600 1800 2000 0 200 400 600 800 1000 1200 1400 1600 1800 2000 Flow Circle [veh/hr/lane] Flow Left Turn [veh/hr/lane] Flow − Flow Diagram for 1−lane Circle simulation Circle  = 1000 P_Brake = 0.2 V_MAX   = 3 gap_back = 3 * Vel",
+          "bbox": {
+            "x0": 83.25,
+            "y0": 555.8499755859375,
+            "x1": 512.10498046875,
+            "y1": 582.0050048828125
+          }
+        }
+      ]
+    }
+  ]
+}
